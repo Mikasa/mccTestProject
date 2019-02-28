@@ -79,7 +79,7 @@ namespace mccTestProject.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePerson(long id, Person person)
         {
-            if(id != person.Id)
+            if (id != person.Id)
             {
                 return BadRequest();
             }
@@ -88,6 +88,24 @@ namespace mccTestProject.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // DELETE: api/person/1
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePerson(long id)
+        {
+            var person = await _context.People.FindAsync(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            _context.People.Remove(person);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+
         }
     }
 }
