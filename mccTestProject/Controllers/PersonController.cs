@@ -55,6 +55,7 @@ namespace mccTestProject.Controllers
             return person;
         }
 
+        // POST: api/person
         [HttpPost]
         public async Task<ActionResult<Person>> AddPerson(Person person)
         {
@@ -74,5 +75,19 @@ namespace mccTestProject.Controllers
             }, person);
         }
 
+        // PUT: api/person/1
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePerson(long id, Person person)
+        {
+            if(id != person.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(person).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
