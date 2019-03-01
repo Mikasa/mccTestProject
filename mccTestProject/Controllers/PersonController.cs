@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using mccTestProject.Services;
 
 namespace mccTestProject.Controllers
 {
@@ -13,39 +14,25 @@ namespace mccTestProject.Controllers
     public class PersonController : ControllerBase
     {
 
-        private readonly PersonContext _context;
+        private readonly PersonService _personService;
 
-        public PersonController(PersonContext context)
+        public PersonController(PersonService personService)
         {
-            _context = context;
-
-            if (_context.People.Count() == 0)
-            {
-                _context.People.Add(new Person
-                {
-                    Name = "Ivan",
-                    Surname = "Ivanov",
-                    Nickname = "Ivanich1991",
-                    Birthday = DateTime.Now,
-                    Password = "SuperPassword"
-                });
-                _context.SaveChanges();
-            }
-
+            _personService = personService;
         }
 
         // GET: api/person
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
+        public ActionResult<List<Person>> GetPeople()
         {
-            return await _context.People.ToListAsync();
+            return _personService.Get();
         }
 
         // GET: api/person/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(long id)
+        public ActionResult<Person> GetPerson(string id)
         {
-            var person = await _context.People.FindAsync(id);
+            var person = _personService.Get(id);
 
             if (person == null)
             {
@@ -57,12 +44,11 @@ namespace mccTestProject.Controllers
 
         // POST: api/person
         [HttpPost]
-        public async Task<ActionResult<Person>> AddPerson(Person person)
+        public ActionResult<Person> CreatePerson(Person person)
         {
-            _context.People.Add(person);
-            await _context.SaveChangesAsync();
+            _personService.Create(person);
 
-            return CreatedAtAction(nameof(GetPerson), new
+            return CreatedAtAction(nameof(CreatePerson), new
             {
 
                 id = person.Id,
@@ -77,32 +63,32 @@ namespace mccTestProject.Controllers
 
         // PUT: api/person/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePerson(long id, Person person)
+        public IActionResult UpdatePerson(string id, Person personIn)
         {
-            if (id != person.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(person).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        // DELETE: api/person/1
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePerson(long id)
-        {
-            var person = await _context.People.FindAsync(id);
+            var person = _personService.Get(id);
 
             if (person == null)
             {
                 return NotFound();
             }
 
-            _context.People.Remove(person);
-            await _context.SaveChangesAsync();
+            _personService.Update(id, personIn);
+
+            return NoContent();
+        }
+
+        // DELETE: api/person/1
+        [HttpDelete("{id}")]
+        public IActionResult DeletePerson(string id)
+        {
+            var person = _personService.Get(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            _personService.Remove(person.Id);
 
             return NoContent();
 

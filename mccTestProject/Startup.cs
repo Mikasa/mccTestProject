@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using mccTestProject.Models;
+using mccTestProject.Services;
 
 namespace mccTestProject
 {
@@ -20,7 +21,9 @@ namespace mccTestProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PersonContext>(opt => opt.UseInMemoryDatabase("People"));
+            //services.AddDbContext<PersonContext>(opt => opt.UseInMemoryDatabase("People"));
+
+            services.AddScoped<PersonService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
