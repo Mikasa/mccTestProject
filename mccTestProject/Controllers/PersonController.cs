@@ -1,10 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using mccTestProject.Models;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using mccTestProject.Services;
 
 namespace mccTestProject.Controllers
@@ -14,9 +10,9 @@ namespace mccTestProject.Controllers
     public class PersonController : ControllerBase
     {
 
-        private readonly PersonService _personService;
+        private readonly PersonContext _personService;
 
-        public PersonController(PersonService personService)
+        public PersonController(PersonContext personService)
         {
             _personService = personService;
         }
@@ -51,9 +47,9 @@ namespace mccTestProject.Controllers
             return CreatedAtAction(nameof(CreatePerson), new
             {
 
-                id = person.Id,
-                name = person.Name,
-                surname = person.Surname,
+                id = person.PersonId,
+                name = person.FirstName,
+                surname = person.Lastname,
                 nickname = person.Nickname,
                 password = person.Password,
                 birthdate = person.Birthday
@@ -88,7 +84,7 @@ namespace mccTestProject.Controllers
                 return NotFound();
             }
 
-            _personService.Remove(person.Id);
+            _personService.Remove(person.PersonId);
 
             return NoContent();
 

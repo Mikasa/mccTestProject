@@ -5,19 +5,35 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
+    <Compile Remove="Migrations\**" />
+    <Compile Remove="Pages\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Migrations\**" />
+    <Content Remove="Pages\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <EmbeddedResource Remove="Pages\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Migrations\**" />
+    <None Remove="Pages\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\PersonController.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
-    <Compile Remove="Models\PersonContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Migrations\20190303130553_Initial.cs" />
+    <Compile Include="Migrations\20190303130553_Initial.Designer.cs" />
+    <Compile Include="Migrations\PersonContextModelSnapshot.cs" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,49 @@
+﻿@page
+@model mccTestProject.Pages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Person</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Lastname)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Lastname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Birthday)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Birthday)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Nickname)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Nickname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Password)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Password)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Person.PersonId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
