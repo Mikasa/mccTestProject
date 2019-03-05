@@ -23,6 +23,8 @@ namespace mccPeopleService
                 {
                     var context = services.GetRequiredService<PeopleContext>();
                     context.Database.Migrate();
+                    
+                    // Seed data if DB is empty.
                     SeedData.Initialize(services);
                 }
                 catch (Exception ex)
