@@ -1,9 +1,7 @@
-﻿using mccPeopleService;
-using mccPeopleService.Models;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace mccPeopleServiceAPI.Models
 {
@@ -12,34 +10,22 @@ namespace mccPeopleServiceAPI.Models
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new PeopleContext(
-                serviceProvider.GetRequiredService<
-                DbContextOptions<PeopleContext>>()))
+                serviceProvider.GetRequiredService<DbContextOptions<PeopleContext>>()))
             {
                 // Look for any Person.
-                if (context.People.Any())
-                {
-                    return;
-                }
+                if (context.People.Any()) return;
 
                 // Add some people if DB is empty.
-                context.People.AddRange(
-                    new Person
+                for (var i = 0; i < 10; i++)
+                    context.People.Add(new Person
                     {
-                        FirstName = "Sergey",
-                        LastName = "Pushnoy",
+                        FirstName = "User" + i,
+                        LastName = "Lastname" + i,
                         BirthDay = DateTime.Now,
-                        Login = "P00h",
-                        Password = "P4sw0rd"
-                    },
-                    new Person
-                    {
-                        FirstName = "Margo",
-                        LastName = "Veselaya",
-                        BirthDay = DateTime.Now,
-                        Login = "Margaritka",
-                        Password = "P4sw0rd"
-                    }
-                );
+                        Login = "Login" + i,
+                        Password = "Password" + i
+                    });
+
                 context.SaveChanges();
             }
         }
