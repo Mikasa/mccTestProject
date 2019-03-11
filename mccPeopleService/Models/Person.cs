@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace mccPeopleService
+namespace mccPeopleServiceAPI.Models
 {
     public class Person
     {

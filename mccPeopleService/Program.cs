@@ -1,5 +1,4 @@
-﻿using mccPeopleService.Models;
-using mccPeopleServiceAPI.Models;
+﻿using mccPeopleServiceAPI.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace mccPeopleService
+namespace mccPeopleServiceAPI
 {
     public class Program
     {
