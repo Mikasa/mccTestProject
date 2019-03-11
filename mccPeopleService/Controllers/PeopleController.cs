@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using mccPeopleService.Models;
+using mccPeopleServiceAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace mccPeopleService.Controllers
+namespace mccPeopleServiceAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,10 +19,21 @@ namespace mccPeopleService.Controllers
 
         // GET: api/people
         // Get list of people.
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
+        [HttpGet("page/{currentPage}")]
+        public IQueryable<Person> GetPeoplePaged(int currentPage)
         {
-            return await _context.People.ToListAsync();
+            // Number of people on the page.
+            const int peopleOnPage = 3;
+
+            var previousPeople = (currentPage - 1) * peopleOnPage;
+
+            // List of people from DB.
+            var peoplePaged = _context
+                .People
+                .Skip(previousPeople)
+                .Take(peopleOnPage);
+
+            return peoplePaged;
         }
 
         // GET: api/people/5
@@ -32,11 +43,7 @@ namespace mccPeopleService.Controllers
         {
             var person = await _context.People.FindAsync(id);
 
-            if (person == null)
-            {
-
-                return NotFound();
-            }
+            if (person == null) return NotFound();
 
             return person;
         }
@@ -64,10 +71,7 @@ namespace mccPeopleService.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePerson(long id, Person person)
         {
-            if (id != person.Id)
-            {
-                return BadRequest();
-            }
+            if (id != person.Id) return BadRequest();
 
             _context.Entry(person).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -82,10 +86,7 @@ namespace mccPeopleService.Controllers
         {
             var person = await _context.People.FindAsync(id);
 
-            if (person == null)
-            {
-                return NotFound();
-            }
+            if (person == null) return NotFound();
 
             _context.People.Remove(person);
             await _context.SaveChangesAsync();
